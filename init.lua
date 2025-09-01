@@ -24,6 +24,7 @@ vim.o.showmode = false
 vim.o.fdm = 'expr'
 vim.o.fde = 'v:lua.vim.treesitter.foldexpr()'
 vim.o.fdt = ''
+vim.o.fdls = 1
 
 vim.opt.fillchars = { eob = ' ', fold = ' ' }
 vim.opt.termguicolors = true
@@ -78,7 +79,7 @@ vim.o.inccommand = 'split'
 vim.o.cursorline = true
 
 -- Minimal number of screen lines to keep above and below the cursor.
-vim.o.scrolloff = 0
+vim.o.scrolloff = 10
 
 -- Confirm for dangerous operations
 vim.o.confirm = true
@@ -131,6 +132,22 @@ vim.api.nvim_create_autocmd('TextYankPost', {
     vim.hl.on_yank()
   end,
 })
+
+-- vim.api.nvim_create_autocmd('BufEnter', {
+--   desc = 'Open Neo-Tree on startup with directory',
+--   callback = function(args)
+--     if package.loaded['neo-tree'] then
+--       return true
+--     else
+--       local stats = vim.uv.fs_stat(vim.api.nvim_buf_get_name(args.buf))
+--       if stats and stats.type == 'directory' then
+--         require('lazy').load { plugins = { 'neo-tree.nvim' } }
+--         pcall(vim.api.nvim_exec_autocmds, 'BufEnter', { group = 'NeoTree_NetrwDeferred', buffer = args.buf })
+--         return true
+--       end
+--     end
+--   end,
+-- })
 
 require 'plugins'
 

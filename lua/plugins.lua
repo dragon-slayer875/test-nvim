@@ -57,7 +57,7 @@ require('lazy').setup {
     },
   },
   install = { colorscheme = { 'onedark' } },
-  checker = { enabled = true },
+  -- checker = { enabled = true },
   ui = {
     border = 'single',
     -- If you are using a Nerd Font: set icons to an empty table which will use the
