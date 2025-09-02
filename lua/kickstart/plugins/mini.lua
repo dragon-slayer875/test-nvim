@@ -1,3 +1,14 @@
+local win_config = function()
+  local height = math.floor(0.618 * vim.o.lines)
+  local width = math.floor(0.618 * vim.o.columns)
+  return {
+    anchor = 'NW',
+    height = height,
+    width = width,
+    row = math.floor(0.5 * (vim.o.lines - height)),
+    col = math.floor(0.5 * (vim.o.columns - width)),
+  }
+end
 return {
   {
     'echasnovski/mini.pick',
@@ -15,7 +26,25 @@ return {
       { '<leader>fk', ':Pick keymaps<CR>', desc = 'Find Keymaps', mode = { 'n' } },
       { '<leader>fd', ':Pick diagnostic scope=current<CR>', desc = 'Find Diagnostics', mode = { 'n' } },
     },
-    opts = {},
+    opts = {
+      mappings = {
+        toggle_info = '<C-k>',
+        toggle_preview = '<C-p>',
+        move_down = '<Tab>',
+        move_up = '<S-Tab>',
+      },
+      window = {
+        config = win_config,
+        -- {
+        --         relative = 'cursor',
+        --         anchor = 'NW',
+        --         row = 0,
+        --         col = 0,
+        --         width = 40,
+        --         height = 20,
+        --       },
+      },
+    },
   },
   -- Better Around/Inside textobjects
   -- Examples:
@@ -38,6 +67,7 @@ return {
   -- statusline
   {
     'echasnovski/mini.statusline',
+    event = 'BufEnter',
     opts = {
       use_icons = vim.g.have_nerd_font,
       content = {
