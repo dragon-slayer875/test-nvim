@@ -15,11 +15,11 @@ return { -- Autocompletion
     -- Snippet Engine
     'rafamadriz/friendly-snippets',
     -- 'folke/lazydev.nvim',
-    {
-      'L3MON4D3/LuaSnip',
-      version = '2.*',
-      build = 'make install_jsregexp',
-    },
+    -- {
+    --   'L3MON4D3/LuaSnip',
+    --   version = '2.*',
+    --   build = 'make install_jsregexp',
+    -- },
   },
   --- @module 'blink.cmp'
   --- @type blink.cmp.Config
@@ -81,13 +81,11 @@ return { -- Autocompletion
     },
 
     sources = {
-      default = { 'lsp', 'path', 'snippets', 'lazydev' },
+      default = { 'lsp', 'path', 'snippets', 'lazydev', 'buffer' },
       providers = {
         lazydev = { module = 'lazydev.integrations.blink', score_offset = 100 },
       },
     },
-
-    snippets = { preset = 'luasnip' },
 
     fuzzy = { implementation = 'prefer_rust_with_warning' },
 

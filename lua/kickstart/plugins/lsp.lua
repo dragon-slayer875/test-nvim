@@ -1,6 +1,7 @@
 return {
   -- Main LSP Configuration
   'neovim/nvim-lspconfig',
+  event = { 'BufReadPre', 'BufNewFile' },
   dependencies = {
     -- Mason must be loaded before its dependents so we need to set it up here.
     -- NOTE: `opts = {}` is the same as calling `require('mason').setup({})`
@@ -8,7 +9,7 @@ return {
     'mason-org/mason-lspconfig.nvim',
     'WhoIsSethDaniel/mason-tool-installer.nvim',
     -- Useful status updates for LSP.
-    { 'j-hui/fidget.nvim', opts = {}, event = { 'BufReadPost' } },
+    { 'j-hui/fidget.nvim', opts = {}, event = { 'BufReadPre' } },
     -- Allows extra capabilities provided by blink.cmp
     'saghen/blink.cmp',
   },
