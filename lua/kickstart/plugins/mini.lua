@@ -59,13 +59,29 @@ return {
           -- -- Custom definitions
           ---@diagnostic disable-next-line: duplicate-set-field
           MiniStatusline.section_fileinfo = function()
-            local icon, file_hl = require('nvim-web-devicons').get_icon_by_filetype(vim.bo.filetype, { default = true })
-            return string.format('%s %s', icon, vim.bo.filetype), file_hl
+            local icon, hl_group = require('nvim-web-devicons').get_icon_by_filetype(vim.bo.filetype, { default = true })
+            return string.format(' %s %s[%s]', icon, vim.bo.filetype, vim.bo.fileencoding), hl_group
           end
 
           ---@diagnostic disable-next-line: duplicate-set-field
           MiniStatusline.section_location = function()
             return '%2l:%-2v'
+          end
+
+          ---@diagnostic disable-next-line: duplicate-set-field
+          MiniStatusline.section_lsp = function()
+            local function get_active_lsps()
+              local clients = vim.lsp.get_clients { bufnr = 0 }
+              local client_names = {}
+
+              for _, client in pairs(clients) do
+                table.insert(client_names, client.name)
+              end
+
+              return client_names
+            end
+            local active_lsps = get_active_lsps()
+            return table.concat(active_lsps, ', ')
           end
 
           return MiniStatusline.combine_groups {
