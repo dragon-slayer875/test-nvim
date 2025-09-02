@@ -95,6 +95,7 @@ vim.keymap.set('n', '|', '<cmd>vsplit<CR>')
 -- vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
 vim.keymap.set('n', '<leader>q', '<cmd>confirm quit<CR>', { desc = 'Close Window' })
 vim.keymap.set('n', '<leader>w', '<cmd>write<CR>', { desc = 'Save changes' })
+vim.keymap.set('n', '<leader>c', '<cmd>bdelete<CR>', { desc = 'Save changes' })
 
 -- NOTE: This won't work in all terminal emulators/tmux/etc. Try your own mapping
 -- or just use <C-\><C-n> to exit terminal mode
