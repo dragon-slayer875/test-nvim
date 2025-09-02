@@ -53,14 +53,16 @@ return {
             trunc_width = 75,
           }
           local lsp = MiniStatusline.section_lsp { trunc_width = 75 }
-          local fileinfo = MiniStatusline.section_fileinfo { trunc_width = 120 }
+          local fileinfo, file_hl = MiniStatusline.section_fileinfo { trunc_width = 120 }
           local location = MiniStatusline.section_location { trunc_width = 75 }
 
           -- -- Custom definitions
-          -- ---@diagnostic disable-next-line: duplicate-set-field
-          -- MiniStatusline.section_fileinfo = function()
-          --   return string.format(' %s', vim.bo.filetype)
-          -- end
+          ---@diagnostic disable-next-line: duplicate-set-field
+          MiniStatusline.section_fileinfo = function()
+            local icon, file_hl = require('nvim-web-devicons').get_icon_by_filetype(vim.bo.filetype, { default = true })
+            return string.format('%s %s', icon, vim.bo.filetype), file_hl
+          end
+
           ---@diagnostic disable-next-line: duplicate-set-field
           MiniStatusline.section_location = function()
             return '%2l:%-2v'
@@ -68,8 +70,8 @@ return {
 
           return MiniStatusline.combine_groups {
             { hl = mode_hl, strings = { ' ' } },
-            { hl = 'MiniStatuslineDevinfo', strings = { git } },
-            { hl = 'MiniStatuslineFileinfo', strings = { fileinfo } },
+            { hl = 'GitGraphBranchTag', strings = { git } },
+            { hl = file_hl, strings = { fileinfo } },
             { hl = 'MiniStatuslineDevinfo', strings = { diff } },
             { hl = 'MiniStatuslineDevinfo', strings = { diagnostics } },
             '%=', -- End left alignment
