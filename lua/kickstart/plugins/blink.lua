@@ -1,3 +1,12 @@
+local has_words_before = function()
+  local col = vim.api.nvim_win_get_cursor(0)[2]
+  if col == 0 then
+    return false
+  end
+  local line = vim.api.nvim_get_current_line()
+  return line:sub(col, col):match '%s' == nil
+end
+
 return { -- Autocompletion
   'saghen/blink.cmp',
   event = { 'InsertEnter', 'CmdlineEnter' },
@@ -6,6 +15,11 @@ return { -- Autocompletion
     -- Snippet Engine
     'rafamadriz/friendly-snippets',
     -- 'folke/lazydev.nvim',
+    {
+      'L3MON4D3/LuaSnip',
+      version = '2.*',
+      build = 'make install_jsregexp',
+    },
   },
   --- @module 'blink.cmp'
   --- @type blink.cmp.Config
@@ -23,21 +37,17 @@ return { -- Autocompletion
       ['<C-e>'] = { 'hide', 'fallback' },
       ['<CR>'] = { 'accept', 'fallback' },
       ['<Tab>'] = {
-        'select_next',
-        'snippet_forward',
         function(cmp)
-          if has_words_before() or vim.api.nvim_get_mode().mode == 'c' then
-            return cmp.show()
+          if has_words_before() then
+            return cmp.insert_next()
           end
         end,
         'fallback',
       },
       ['<S-Tab>'] = {
-        'select_prev',
-        'snippet_backward',
         function(cmp)
-          if vim.api.nvim_get_mode().mode == 'c' then
-            return cmp.show()
+          if has_words_before() then
+            return cmp.insert_prev()
           end
         end,
         'fallback',
@@ -52,6 +62,7 @@ return { -- Autocompletion
     completion = {
       list = { selection = { preselect = false, auto_insert = true } },
       menu = {
+        enabled = true,
         auto_show = function(ctx)
           return ctx.mode ~= 'cmdline'
         end,
