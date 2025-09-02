@@ -41,7 +41,7 @@ return {
   end,
   lazy = false,
   keys = {
-    { '<leader>e', ':Neotree toggle<CR>', desc = 'Toggle explorer', silent = true },
+    { '<leader>e', '<cmd>Neotree toggle<CR>', desc = 'Toggle explorer', silent = true },
     {
       '<leader>o',
       function()
@@ -62,9 +62,12 @@ return {
       width = 30,
       position = 'right',
       mappings = {
-        ['<space>'] = {
-          nowait = false,
-        },
+        ['<space>'] = false,
+        O = 'system_open',
+      },
+      fuzzy_finder_mappings = { -- define keymaps for filter popup window in fuzzy_finder_mode
+        ['<C-J>'] = 'move_cursor_down',
+        ['<C-K>'] = 'move_cursor_up',
       },
     },
     filesystem = {
