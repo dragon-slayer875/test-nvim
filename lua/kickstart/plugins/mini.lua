@@ -9,6 +9,7 @@ local win_config = function()
     col = math.floor(0.5 * (vim.o.columns - width)),
   }
 end
+
 return {
   {
     'echasnovski/mini.pick',
@@ -17,14 +18,14 @@ return {
       opts = {},
     },
     keys = {
-      { '<leader>fh', ':Pick help<CR>', desc = 'Find Help', mode = { 'n' } },
-      { '<leader>fb', ':Pick buffers<CR>', desc = 'Find Buffers', mode = { 'n' } },
-      { '<leader>ff', ':Pick files<CR>', desc = 'Find Files', mode = { 'n' } },
-      { '<leader>fw', ':Pick grep_live<CR>', desc = 'Find Words', mode = { 'n' } },
-      { '<leader>fR', ':Pick resume<CR>', desc = 'Find Resume', mode = { 'n' } },
-      { '<leader>fc', ':Pick colorschemes<CR>', desc = 'Find Colorscheme', mode = { 'n' } },
-      { '<leader>fk', ':Pick keymaps<CR>', desc = 'Find Keymaps', mode = { 'n' } },
-      { '<leader>fd', ':Pick diagnostic scope=current<CR>', desc = 'Find Diagnostics', mode = { 'n' } },
+      { '<leader>fh', '<cmd>Pick help<CR>', desc = 'Find Help', mode = { 'n' } },
+      { '<leader>fb', '<cmd>Pick buffers<CR>', desc = 'Find Buffers', mode = { 'n' } },
+      { '<leader>ff', '<cmd>Pick files<CR>', desc = 'Find Files', mode = { 'n' } },
+      { '<leader>fw', '<cmd>Pick grep_live<CR>', desc = 'Find Words', mode = { 'n' } },
+      { '<leader>fR', '<cmd>Pick resume<CR>', desc = 'Find Resume', mode = { 'n' } },
+      { '<leader>fc', '<cmd>Pick colorschemes<CR>', desc = 'Find Colorscheme', mode = { 'n' } },
+      { '<leader>fk', '<cmd>Pick keymaps<CR>', desc = 'Find Keymaps', mode = { 'n' } },
+      { '<leader>fd', '<cmd>Pick diagnostic scope=current<CR>', desc = 'Find Diagnostics', mode = { 'n' } },
     },
     opts = {
       mappings = {
@@ -53,6 +54,7 @@ return {
   --  - ci'  - [C]hange [I]nside [']quote
   {
     'echasnovski/mini.ai',
+    event = 'BufReadPre',
     opts = {
       n_lines = 500,
     },
@@ -63,6 +65,7 @@ return {
   -- - sr)'  - [S]urround [R]eplace [)] [']
   {
     'echasnovski/mini.surround',
+    event = 'BufReadPre',
   },
   -- statusline
   {
@@ -79,6 +82,12 @@ return {
             trunc_width = 75,
           }
           local diagnostics = MiniStatusline.section_diagnostics {
+            signs = {
+              ERROR = '󰅚 ',
+              WARN = '󰀪 ',
+              INFO = '󰋽 ',
+              HINT = '󰌶 ',
+            },
             icon = '',
             trunc_width = 75,
           }
@@ -95,7 +104,7 @@ return {
 
           ---@diagnostic disable-next-line: duplicate-set-field
           MiniStatusline.section_location = function()
-            return '%2l:%-2v'
+            return '%P %2l:%-2v'
           end
 
           ---@diagnostic disable-next-line: duplicate-set-field
