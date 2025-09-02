@@ -12,8 +12,7 @@ return { -- Autocompletion
   event = { 'InsertEnter', 'CmdlineEnter' },
   version = '1.*',
   dependencies = {
-    -- Snippet Engine
-    'rafamadriz/friendly-snippets',
+    { 'rafamadriz/friendly-snippets', event = 'InsertEnter' },
     -- 'folke/lazydev.nvim',
     -- {
     --   'L3MON4D3/LuaSnip',
