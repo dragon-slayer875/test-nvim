@@ -12,15 +12,16 @@ return {
       local added, changed, removed = status.added, status.changed, status.removed
       local status_txt = {}
       if added and added > 0 then
-        -- local added_status = string.format('%%#%s# %s%%*', 'DiffAdd', added)
-        local added_status = string.format(' %s', added)
+        local added_status = string.format('%%#%s# %s%%*', 'diffAdded', added)
         table.insert(status_txt, added_status)
       end
       if changed and changed > 0 then
-        table.insert(status_txt, ' ' .. changed)
+        local changed_status = string.format('%%#%s# %s%%*', 'diffChanged', changed)
+        table.insert(status_txt, changed_status)
       end
       if removed and removed > 0 then
-        table.insert(status_txt, ' ' .. removed)
+        local removed_status = string.format('%%#%s# %s%%*', 'diffRemoved', removed)
+        table.insert(status_txt, removed_status)
       end
       return table.concat(status_txt, ' ')
     end,
