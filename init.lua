@@ -24,7 +24,8 @@ vim.o.showmode = false
 vim.o.fdm = 'expr'
 vim.o.fde = 'v:lua.vim.treesitter.foldexpr()'
 vim.o.fdt = ''
-vim.o.fdls = 1
+vim.o.fdls = 99
+vim.o.fdc = '1'
 
 vim.opt.fillchars = { eob = ' ', fold = ' ' }
 vim.opt.termguicolors = true
@@ -32,6 +33,7 @@ vim.opt.termguicolors = true
 -- Set statusline appearance condition and command line height
 vim.o.laststatus = 3
 vim.o.cmdheight = 0
+vim.o.showcmdloc = 'statusline'
 
 -- Sync clipboard between OS and Neovim.
 vim.schedule(function()

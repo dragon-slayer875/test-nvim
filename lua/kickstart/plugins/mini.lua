@@ -46,6 +46,10 @@ return {
         --       },
       },
     },
+    config = function(_, opts)
+      require('mini.pick').setup(opts)
+      vim.ui.select = require('mini.pick').ui_select
+    end,
   },
   -- Better Around/Inside textobjects
   -- Examples:
@@ -68,74 +72,76 @@ return {
     event = 'BufReadPre',
   },
   -- statusline
-  {
-    'echasnovski/mini.statusline',
-    event = 'BufEnter',
-    opts = {
-      use_icons = vim.g.have_nerd_font,
-      content = {
-        active = function()
-          local _, mode_hl = MiniStatusline.section_mode { trunc_width = 120 }
-          local git = MiniStatusline.section_git { trunc_width = 40 }
-          local diff = MiniStatusline.section_diff {
-            icon = '',
-            trunc_width = 75,
-          }
-          local diagnostics = MiniStatusline.section_diagnostics {
-            signs = {
-              ERROR = '󰅚 ',
-              WARN = '󰀪 ',
-              INFO = '󰋽 ',
-              HINT = '󰌶 ',
-            },
-            icon = '',
-            trunc_width = 75,
-          }
-          local lsp = MiniStatusline.section_lsp { trunc_width = 75 }
-          local fileinfo, file_hl = MiniStatusline.section_fileinfo { trunc_width = 120 }
-          local location = MiniStatusline.section_location { trunc_width = 75 }
-
-          -- -- Custom definitions
-          ---@diagnostic disable-next-line: duplicate-set-field
-          MiniStatusline.section_fileinfo = function()
-            local icon, hl_group = require('nvim-web-devicons').get_icon_by_filetype(vim.bo.filetype, { default = true })
-            return string.format(' %s %s[%s]', icon, vim.bo.filetype, vim.bo.fileencoding), hl_group
-          end
-
-          ---@diagnostic disable-next-line: duplicate-set-field
-          MiniStatusline.section_location = function()
-            return '%P %2l:%-2v'
-          end
-
-          ---@diagnostic disable-next-line: duplicate-set-field
-          MiniStatusline.section_lsp = function()
-            local function get_active_lsps()
-              local clients = vim.lsp.get_clients { bufnr = 0 }
-              local client_names = {}
-
-              for _, client in pairs(clients) do
-                table.insert(client_names, client.name)
-              end
-
-              return client_names
-            end
-            local active_lsps = get_active_lsps()
-            return table.concat(active_lsps, ', ')
-          end
-
-          return MiniStatusline.combine_groups {
-            { hl = mode_hl, strings = { ' ' } },
-            { hl = 'GitGraphBranchTag', strings = { git } },
-            { hl = file_hl, strings = { fileinfo } },
-            { hl = 'MiniStatuslineDevinfo', strings = { diff } },
-            { hl = 'MiniStatuslineDevinfo', strings = { diagnostics } },
-            '%=', -- End left alignment
-            { hl = 'MiniStatuslineDevinfo', strings = { lsp } },
-            { hl = 'MiniStatuslineFileinfo', strings = { location } },
-            { strings = { ' ' }, hl = mode_hl },
-          }
-        end,
-      },
-    },
-  },
+  -- {
+  --   'echasnovski/mini.statusline',
+  --   opts = {
+  --     use_icons = vim.g.have_nerd_font,
+  --     content = {
+  --       active = function()
+  --         local _, mode_hl = MiniStatusline.section_mode { trunc_width = 120 }
+  --         local git = MiniStatusline.section_git { trunc_width = 40 }
+  --         local diff = MiniStatusline.section_diff {
+  --           icon = '',
+  --           trunc_width = 75,
+  --         }
+  --         local diagnostics = MiniStatusline.section_diagnostics {
+  --           signs = {
+  --             ERROR = '󰅚 ',
+  --             WARN = '󰀪 ',
+  --             INFO = '󰋽 ',
+  --             HINT = '󰌶 ',
+  --           },
+  --           icon = '',
+  --           trunc_width = 75,
+  --         }
+  --         local lsp = MiniStatusline.section_lsp { trunc_width = 75 }
+  --         local fileinfo, file_hl = MiniStatusline.section_fileinfo { trunc_width = 120 }
+  --         local location = MiniStatusline.section_location { trunc_width = 75 }
+  --
+  --         -- -- Custom definitions
+  --         ---@diagnostic disable-next-line: duplicate-set-field
+  --         MiniStatusline.section_fileinfo = function()
+  --           local icon, hl_group = require('nvim-web-devicons').get_icon_by_filetype(vim.bo.filetype, { default = true })
+  --           return string.format(' %s %s[%s]', icon, vim.bo.filetype, vim.bo.fileencoding), hl_group
+  --         end
+  --
+  --         ---@diagnostic disable-next-line: duplicate-set-field
+  --         MiniStatusline.section_location = function()
+  --           return '%P %2l:%-2v'
+  --         end
+  --
+  --         ---@diagnostic disable-next-line: duplicate-set-field
+  --         MiniStatusline.section_lsp = function()
+  --           local function get_active_lsps()
+  --             local clients = vim.lsp.get_clients { bufnr = 0 }
+  --             local client_names = {}
+  --
+  --             for _, client in pairs(clients) do
+  --               table.insert(client_names, client.name)
+  --             end
+  --
+  --             return client_names
+  --           end
+  --           local active_lsps = get_active_lsps()
+  --           return table.concat(active_lsps, ', ')
+  --         end
+  --
+  --         return MiniStatusline.combine_groups {
+  --           { hl = mode_hl, strings = { ' ' } },
+  --           { hl = 'GitGraphBranchTag', strings = { git } },
+  --           { hl = file_hl, strings = { fileinfo } },
+  --           { hl = 'MiniStatuslineDevinfo', strings = { diff } },
+  --           { hl = 'MiniStatuslineDevinfo', strings = { diagnostics } },
+  --           '%=', -- End left alignment
+  --           { hl = 'MiniStatuslineDevinfo', strings = { lsp } },
+  --           { hl = 'MiniStatuslineFileinfo', strings = { location } },
+  --           { strings = { ' ' }, hl = mode_hl },
+  --         }
+  --       end,
+  --     },
+  --   },
+  --   config = function(_, opts)
+  --     require('mini.statusline').setup(opts)
+  --   end,
+  -- },
 }
