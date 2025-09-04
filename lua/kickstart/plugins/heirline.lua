@@ -1,7 +1,6 @@
 return {
   'rebelot/heirline.nvim',
   event = 'BufEnter',
-  lazy = false,
   config = function()
     local conditions = require 'heirline.conditions'
     local utils = require 'heirline.utils'
