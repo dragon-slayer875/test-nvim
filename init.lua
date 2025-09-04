@@ -1,3 +1,19 @@
+vim.api.nvim_create_autocmd('BufEnter', {
+  desc = 'Open dir with NeoTree',
+  group = vim.api.nvim_create_augroup('kick-nt-ntrw', { clear = true }),
+  callback = function(args)
+    if package.loaded['neo-tree'] then
+      return true
+    else
+      local stats = vim.uv.fs_stat(vim.api.nvim_buf_get_name(args.buf))
+      if stats and stats.type == 'directory' then
+        require('lazy').load { plugins = { 'neo-tree.nvim' } }
+        pcall(vim.api.nvim_exec_autocmds, 'BufEnter', { group = 'NeoTree_NetrwDeferred', buffer = args.buf })
+        return true
+      end
+    end
+  end,
+})
 -- Set <space> as the leader key
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
