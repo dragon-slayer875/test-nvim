@@ -22,11 +22,7 @@ vim.o.mouse = 'a'
 vim.o.showmode = false
 
 -- Enable folding on according to treesitter evaluation
-vim.o.fdm = 'expr'
-vim.o.fde = 'v:lua.vim.treesitter.foldexpr()'
-vim.o.fdt = ''
-vim.o.fdls = 99
-vim.o.fdc = '1'
+require('folds').setup()
 
 vim.opt.fillchars = { eob = ' ', fold = ' ' }
 vim.opt.termguicolors = true
@@ -56,9 +52,6 @@ vim.o.signcolumn = 'yes'
 
 -- Decrease update time
 vim.o.updatetime = 250
-
--- Decrease mapped sequence wait time
-vim.o.timeoutlen = 300
 
 -- Configure how new splits should be opened
 vim.o.splitright = true
